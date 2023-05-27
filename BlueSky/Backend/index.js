@@ -16,7 +16,6 @@ app.use(express.json());
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    methods: ["GET", "POST"],
     credentials: true,
   })
 );
@@ -120,7 +119,7 @@ app.post("/addPost", (req, res) => {
   const description = req.body.description;
 
   db.query(
-    "INSERT INTO PostCard (description, title) VALUES (?, ?)",
+    "INSERT INTO PostCard (title, description) VALUES (?, ?)",
     [title, description],
     (err, result) => {
       console.log(err);
@@ -131,15 +130,12 @@ app.post("/addPost", (req, res) => {
 });
 
 app.get("/getPosts", (req, res) => {
-  db.query(
-    "SELECT * FROM PostCard",
-    (error, result) => {
-      if (error) {
-        res.send({ err: error });
-      }
-      res.send(result);
+  db.query("SELECT * FROM PostCard", (error, result) => {
+    if (error) {
+      res.send({ err: error });
     }
-  );
+    res.send(result);
+  });
 });
 
 app.get("/login", (req, res) => {
@@ -150,18 +146,37 @@ app.get("/login", (req, res) => {
   }
 });
 
-app.patch("/editPost");
-
-app.delete("/deletePost/:postId", (req, res) => {
-  const username = req.body.username;
-
-  db.query("DELETE FROM User WHERE username = ?", username, (err, result) => {
-    if (err) {
-      console.error("Error deleting Post", err);
-      res.sendStatus(500); // Return a server error status code
-      return;
+app.patch("/editPost/:id", (req, res) => {
+  const title = req.body.title;
+  const description = req.body.description;
+  const id = req.params.id;
+  console.log(id);
+  db.query(
+    "UPDATE PostCard SET title=?, description=? WHERE id=?",
+    [title, description, id],
+    (error, result) => {
+      if (error) {
+        res.send({ err: error });
+      }
+      res.send(result);
     }
-  });
+  );
+});
+
+app.delete("/deletePost/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query(
+    "DELETE FROM PostCard WHERE id = ?",
+    id,
+    (err, result) => {
+      if (err) {
+        console.error("Error deleting Post", err);
+        res.sendStatus(500); // Return a server error status code
+        return;
+      }
+    }
+  );
 });
 
 app.listen(port, () => {
