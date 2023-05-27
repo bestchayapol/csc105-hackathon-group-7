@@ -49,13 +49,6 @@ db.connect((err) => {
   else console.error(err);
 });
 
-// app.get('/test', (req, res) => {
-//     db.query("SELECT * from PostCard").then((err, results) => {
-//         console.log(err, results);
-//         res.json(err, results)
-//     })
-// })
-
 app.post("/register", (req, res) => {
   const username = req.body.username;
   const email = req.body.email;
@@ -166,17 +159,13 @@ app.patch("/editPost/:id", (req, res) => {
 app.delete("/deletePost/:id", (req, res) => {
   const id = req.params.id;
 
-  db.query(
-    "DELETE FROM PostCard WHERE id = ?",
-    id,
-    (err, result) => {
-      if (err) {
-        console.error("Error deleting Post", err);
-        res.sendStatus(500); // Return a server error status code
-        return;
-      }
+  db.query("DELETE FROM PostCard WHERE id = ?", id, (err, result) => {
+    if (err) {
+      console.error("Error deleting Post", err);
+      res.sendStatus(500); // Return a server error status code
+      return;
     }
-  );
+  });
 });
 
 app.listen(port, () => {
