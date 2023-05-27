@@ -8,32 +8,46 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import { useState } from "react";
+import axios from "../../axios";
 
 function CreateCard({ onCloseModal, setTitles, titles }) {
   const [selectedNumber, setSelectedNumber] = useState(null);
   const [title, setTitle] = useState("");
-  const [message, setMessage] = useState("");
+  const [description, setDescription] = useState("");
   const handleNumberSelection = (number) => {
     setSelectedNumber(number);
   };
-  
+
   const resetanything = () => {
-    setMessage("");
+    setDescription("");
     setTitle("");
     setSelectedNumber(null);
+  };
+
+  const createPost = async () => {
+    await axios.post("/addPost", {
+      title,
+      description,
+    });
+    onCloseModal();
   };
 
   return (
     <Box>
       <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <TextField label="Title" sx={{ m: 2 }} value={title} onChange={(e) => setTitle(e.target.value)} />
+        <TextField
+          label="Title"
+          sx={{ m: 2 }}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
         <TextField
           label="Write Your Message"
           multiline
           rows={4}
           sx={{ m: 2 }}
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
         />
         <FormControl component="fieldset" sx={{ m: 2 }}>
           <Typography sx={{ fontWeight: "bold" }}>
@@ -63,10 +77,7 @@ function CreateCard({ onCloseModal, setTitles, titles }) {
         <Box sx={{ display: "flex" }}>
           <Button
             disableRipple
-            onClick={() => {
-              setTitles([...titles, title])
-              onCloseModal();
-            }}
+            onClick={createPost}
             sx={{
               backgroundColor: "#505A74",
               color: "white",

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import Banner from "../components/Banner";
-import { Modal, Box, Button, Fab,Grid } from "@mui/material";
+import { Modal, Box, Button, Fab, Grid } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CreateCard from "../components/modal/CreateCard";
 import Card from "../components/Card";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../axios";
 
 function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,14 +15,13 @@ function Home() {
   const [data, setData] = useState();
   const navigate = useNavigate();
 
+  async function fetchPosts() {
+    const res = await axios.get("/getPosts");
+    setPosts(res.data);
+  }
+
   useEffect(() => {
-    function fetchData() {
-      axios.get('http://localhost:3306/hi').then((response) => {
-        setData(response.data);
-        console.log(response.data);
-      });
-    }
-    fetchData();
+    fetchPosts();
   }, []);
 
   const handleModalOpen = () => {
@@ -31,6 +30,7 @@ function Home() {
 
   const handleModalClose = () => {
     setIsModalOpen(false);
+    fetchPosts();
   };
 
   const handleCardSubmit = () => {
@@ -82,17 +82,19 @@ function Home() {
           spacing={1}
           width={"80%"}
           alignSelf={"center"}
-        >  
-
-           
-        {titles.map((item, index) => {
-          return <Card key={index} title={item} onClick={()=>{
-            navigate()
-          }}/>;
-        })}
-       
-
-
+        >
+          {posts.map((item, index) => {
+            return (
+              <Card
+                key={index}
+                title={item.title}
+                description={item.description}
+                onClick={() => {
+                  navigate(`/posts/${item.id}`);
+                }}
+              />
+            );
+          })}
         </Grid>
       </Box>
       <Fab
