@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme } from "@mui/material/styles";
 import Banner from "../components/Banner";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -34,15 +35,23 @@ const theme = createTheme({
 });
 
 export default function Login() {
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    axios.post("http://localhost:3306/login", {
-      email: data.get("email"),
-      password: data.get("password"),
-    }).then((response) => {
-      console.log(response.data)
-    });
+    axios
+      .post("http://localhost:3306/login", {
+        email: data.get("email"),
+        password: data.get("password"),
+      })
+      .then((response) => {
+        const isLogin = response.data.success;
+        if (isLogin) {
+          navigate("/Home");
+        } else {
+          alert("Error logging in");
+        }
+      });
   };
 
   return (
