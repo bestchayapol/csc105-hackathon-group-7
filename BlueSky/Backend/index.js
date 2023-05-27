@@ -15,7 +15,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:5173"],
     credentials: true,
   })
 );
@@ -71,28 +71,30 @@ app.post("/register", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
+  const { email, password } = req.body;
+  try {
+    db.query("SELECT * FROM User WHERE Email=?", [email], (err, result) => {
+      if (err) {
+        return res.send({ err: err });
+      }
+      if (result.length > 0) {
+        bcrypt.compare(password, result[0].Password, function (error, response) {
+          if (response) {
+            req.session.user = result;
+            return res.send({response : 'login success'});
+          } else {
+            return res.send({ message: "Wrong username or password combination" });
+          }
+        });
+      } else {
+        return res.send({ message: "User doesn't exist" });
+      }
+    });
+  } catch(e) {
+    console.log(e)
+  }
 
-  db.query("SELECT * FROM User WHERE username = ?", username, (err, result) => {
-    if (err) {
-      res.send({ err: err });
-    }
-
-    if (result.length > 0) {
-      bcrypt.compare(password, result[0].password, (error, response) => {
-        if (response) {
-          req.session.user = result;
-          console.log(req.session.user);
-          res.send(result);
-        } else {
-          res.send({ message: "Wrong username or password combination" });
-        }
-      });
-    } else {
-      res.send({ message: "User doesn't exist" });
-    }
-  });
+ 
 });
 
 app.post("/logout", (req, res) => {
