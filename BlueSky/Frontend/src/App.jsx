@@ -5,6 +5,7 @@ import Welcome from "./pages/Welcome";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import PostcardContent from "./pages/PostcardContent";
+import Post from "./components/Post";
 function App() {
   return (
     <BrowserRouter>
@@ -17,7 +18,8 @@ function App() {
           path="/PostcardContent/:PostcardID"
           element={<PostcardContent />}
         />
-        <Route exact path="/Home" element={<Home />} />
+        <Route exact path="/posts" element={<Home />} />
+        <Route path="/posts/:id" element={<Post />} />
       </Routes>
     </BrowserRouter>
   );

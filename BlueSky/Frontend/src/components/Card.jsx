@@ -2,7 +2,7 @@ import { Box, Grid } from "@mui/material";
 
 function Card(props) {
   return (
-    <Box>
+    <Box onClick={props.onClick}>
       {/* <Box
         sx={{
           display: "flex",
@@ -13,21 +13,20 @@ function Card(props) {
         }}
       > */}
 
-        <Box
-          sx={{
-            display: "flex",
-            height: 200,
-            width: 200,
-            backgroundColor: "#DFCCAF",
-            justifyContent: "center",
-            alignItems: "center",
-            fontFamily: "raleway",
-           m:3
-          }}
-        >
-          {props.title}
-        </Box>
-  
+      <Box
+        sx={{
+          display: "flex",
+          height: 200,
+          width: 200,
+          backgroundColor: "#DFCCAF",
+          justifyContent: "center",
+          alignItems: "center",
+          fontFamily: "raleway",
+          m: 3,
+        }}
+      >
+        {props.title}
+      </Box>
     </Box>
   );
 }
