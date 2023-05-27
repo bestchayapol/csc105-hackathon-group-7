@@ -42,12 +42,12 @@ const db = mysql.createConnection({
   host: "db.cshack.site",
   password: "210237265",
   port: "3306",
-  database: "group07"
+  database: "group07",
 });
 
 db.connect((err) => {
-    if (err === null) console.log("Database is Connect");
-    else console.error(err);
+  if (err === null) console.log("Database is Connect");
+  else console.error(err);
 });
 
 // app.get('/test', (req, res) => {
@@ -72,7 +72,7 @@ app.post("/register", (req, res) => {
       (err, result) => {
         console.log(err);
         console.log(result);
-        res.json({email, username, password});
+        res.json({ email, username, password });
       }
     );
   });
@@ -116,19 +116,31 @@ app.post("/logout", (req, res) => {
 });
 
 app.post("/addPost", (req, res) => {
-    const title = req.body.title;
-    const description = req.body.description;
+  const title = req.body.title;
+  const description = req.body.description;
 
-    db.query(
-        "INSERT INTO PostCard (description, title) VALUES (?, ?)",
-        [title, description],
-        (err, result) => {
-          console.log(err);
-          console.log(result);
-          res.json({title, description});
-        }
-      );
-})
+  db.query(
+    "INSERT INTO PostCard (description, title) VALUES (?, ?)",
+    [title, description],
+    (err, result) => {
+      console.log(err);
+      console.log(result);
+      res.json({ title, description });
+    }
+  );
+});
+
+app.get("/getPosts", (req, res) => {
+  db.query(
+    "SELECT * FROM PostCard",
+    (error, result) => {
+      if (error) {
+        res.send({ err: error });
+      }
+      res.send(result);
+    }
+  );
+});
 
 app.get("/login", (req, res) => {
   if (req.session.user) {
@@ -136,6 +148,20 @@ app.get("/login", (req, res) => {
   } else {
     res.send({ loggedIn: false });
   }
+});
+
+app.patch("/editPost");
+
+app.delete("/deletePost/:postId", (req, res) => {
+  const username = req.body.username;
+
+  db.query("DELETE FROM User WHERE username = ?", username, (err, result) => {
+    if (err) {
+      console.error("Error deleting Post", err);
+      res.sendStatus(500); // Return a server error status code
+      return;
+    }
+  });
 });
 
 app.listen(port, () => {
