@@ -40,10 +40,14 @@ export default function Login() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     axios
-      .post("http://localhost:3306/login", {
-        email: data.get("email"),
-        password: data.get("password"),
-      })
+      .post(
+        "http://localhost:3306/login",
+        {
+          email: data.get("email"),
+          password: data.get("password"),
+        },
+        { withCredentials: true }
+      )
       .then((response) => {
         const isLogin = response.data.success;
         if (isLogin) {

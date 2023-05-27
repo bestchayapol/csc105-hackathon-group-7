@@ -15,7 +15,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
     credentials: true,
   })
 );
@@ -26,8 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
   session({
-    key: "userId",
-    secret: "subscribe",
+    secret: "very secret string",
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -81,6 +80,10 @@ app.post("/login", (req, res) => {
         bcrypt.compare(password, result[0].Password, function (error, response) {
           if (response) {
             req.session.user = result;
+            // res.cookie('sessionId', req.session.id, {
+            //   maxAge: 900000, // Cookie expiration time in milliseconds
+            //   httpOnly: true, // Cookie cannot be accessed via client-side JavaScript
+            // });
             return res.send({success : true});
           } else {
             return res.send({ success: false, message: "Wrong username or password combination" });
