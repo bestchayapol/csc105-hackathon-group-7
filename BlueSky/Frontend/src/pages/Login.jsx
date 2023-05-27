@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme } from "@mui/material/styles";
 import Banner from "../components/Banner";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,NavLink } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -115,9 +115,12 @@ export default function Login() {
           </Button>
           <Grid container>
             <Grid item>
-              <Link href="#" variant="body2" sx={{ color: "gray" }}>
+              {/* <Link href="#" variant="body2" sx={{ color: "gray" }}>
                 {"Don't have an account? Sign Up"}
-              </Link>
+              </Link> */}
+              <NavLink to='/Signup'>
+              Don't have an account? Sign Up
+              </NavLink>
             </Grid>
           </Grid>
         </Box>

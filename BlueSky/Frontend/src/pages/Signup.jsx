@@ -7,39 +7,32 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { createTheme } from "@mui/material/styles";
 import Banner from "../components/Banner";
+import { NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
-const theme = createTheme({
-  typography: {
-    fontFamily: "'Roboto Mono', monospace",
-  },
-});
-
-export default function Signup() {
+function Signup() {
+  const navigate = useNavigate()
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const newData = {
       email: data.get("email"),
       password: data.get("password"),
-    });
+      username: data.get('username'),
+    };
+
+    axios
+      .post("http://localhost:3306/register", newData)
+      .then((response) => {
+        // Handle the response from the server
+        console.log(response.data);
+        // Perform any necessary actions after successful data insertion
+        // For example, redirect to a new page or show a success message
+      })
+      .catch((error) => {
+        // Handle any errors that occurred during the POST request
+        console.error(error);
+      });
   };
 
   return (
@@ -63,6 +56,16 @@ export default function Signup() {
           SIGN UP
         </h2>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="username"
+            label="Create username"
+            type="text"
+            id="username"
+            autoComplete="username"
+          />
           <TextField
             margin="normal"
             required
@@ -83,7 +86,11 @@ export default function Signup() {
             id="password"
             autoComplete="new-password"
           />
+
           <Button
+          onClick={() => {
+            navigate("/Home")
+          }}
             type="submit"
             fullWidth
             variant="contained"
@@ -98,14 +105,24 @@ export default function Signup() {
           </Button>
           <Grid container>
             <Grid item>
-              <Link href="#" variant="body2" sx={{ color: "gray" }}>
-                {"Already a user? LOGIN"}
-              </Link>
+              <NavLink to="/Login">
+                Already a user? LOGIN
+              </NavLink>
             </Grid>
           </Grid>
         </Box>
       </Box>
-      <Copyright sx={{ mt: 8, mb: 4 }} />
     </>
   );
 }
+
+export default Signup;
+
+/**
+ * TODO:
+ * 1. add onClick to 'Sign up' Button
+ * 2. add data to database with axios
+ * 3. wait for response from database
+ * 4. if sign up succeed go to home page with useNavigate()
+ * 5. if not, alert('Sign up error')
+ */

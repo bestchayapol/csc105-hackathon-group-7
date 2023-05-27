@@ -44,7 +44,7 @@ function Banner() {
             <>
               <Button
                 onClick={() => {
-                  navigate("/Register");
+                  navigate("/Signup");
                 }}
                 sx={{
                   height: 70,
