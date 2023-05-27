@@ -79,7 +79,7 @@ app.post("/login", (req, res) => {
       if (result.length > 0) {
         bcrypt.compare(password, result[0].Password, function (error, response) {
           if (response) {
-            req.session.user = result;
+            req.session.user = result;      
             // res.cookie('sessionId', req.session.id, {
             //   maxAge: 900000, // Cookie expiration time in milliseconds
             //   httpOnly: true, // Cookie cannot be accessed via client-side JavaScript
