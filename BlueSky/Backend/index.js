@@ -169,6 +169,10 @@ app.delete("/deletePost/:id", (req, res) => {
       console.error("Error deleting Post", err);
       res.sendStatus(500); // Return a server error status code
       return;
+    } else {
+      if (result) {
+        return res.send({success: true, result})
+      }
     }
   });
 });
