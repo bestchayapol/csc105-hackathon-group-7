@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import PostcardContent from "./pages/PostcardContent";
 import Post from "./components/Post";
+
 function App() {
   return (
     <BrowserRouter>
@@ -19,7 +20,7 @@ function App() {
           element={<PostcardContent />}
         />
         <Route exact path="/posts" element={<Home />} />
-        <Route path="/posts/:id" element={<Post />} />
+        <Route path="/posts/:id" element={<PostcardContent />} />
       </Routes>
     </BrowserRouter>
   );
