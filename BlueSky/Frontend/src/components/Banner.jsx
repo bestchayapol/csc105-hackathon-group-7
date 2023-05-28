@@ -15,7 +15,7 @@ function Banner() {
             m: 2,
             mr: 50,
             mt: 3,
-            cursor: "pointer",
+            cursor: "pointer"
           }}
           component="img"
           src={Logo}
@@ -26,10 +26,10 @@ function Banner() {
         <Typography
           sx={{
             color: "white",
-            fontSize: "50px",
+            fontSize: "30px",
+            fontWeight: "bold",
             textAlign: "center",
-            mt: 1,
-            ml: 7,
+            fontFamily: "'Roboto Mono', monospace",
           }}
         >
           BlueSky
@@ -37,20 +37,17 @@ function Banner() {
         <Box
           sx={{ display: "flex", justifyContent: "flex-end", ml: 45, mt: 2 }}
         >
-          {location.pathname === "/Register" ||
-          location.pathname === "/Login" ? (
-            ""
-          ) : (
-            <>
+          
               <Button
                 onClick={() => {
                   navigate("/Signup");
                 }}
                 sx={{
-                  height: 70,
-                  width: 70,
+                  height: 50,
+                  width: 50,
                   mr: 3,
                   color: "white",
+                  fontFamily: "'Roboto Mono', monospace",
                   fontSize: "15px",
                 }}
               >
@@ -60,12 +57,12 @@ function Banner() {
                 onClick={() => {
                   navigate("/Login");
                 }}
-                sx={{ height: 70, width: 70, color: "white", fontSize: "15px" }}
+                sx={{ height: 50, width: 50, color: "white", fontFamily: "'Roboto Mono', monospace", fontSize: "15px" }}
               >
                 LOGIN
               </Button>
-            </>
-          )}
+            
+          
         </Box>
       </Box>
     </Box>

@@ -4,35 +4,24 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import axios from "../axios";
 import { createTheme } from "@mui/material/styles";
-import Banner from "../components/Banner";
-import { NavLink, useNavigate } from "react-router-dom";
-import axios from "axios";
+import Bannernobutton from "../components/Bannernobutton";
+import { useState } from "react";
 
-function Signup() {
-  const navigate = useNavigate()
+const theme = createTheme({
+  typography: {
+    fontFamily: "'Roboto Mono', monospace",
+  },
+});
+
+export default function Signup() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const newData = {
-      email: data.get("email"),
-      password: data.get("password"),
-      username: data.get('username'),
-    };
-
-    axios
-      .post("http://localhost:3306/register", newData)
-      .then((response) => {
-        // Handle the response from the server
-        console.log(response.data);
-        // Perform any necessary actions after successful data insertion
-        // For example, redirect to a new page or show a success message
-      })
-      .catch((error) => {
-        // Handle any errors that occurred during the POST request
-        console.error(error);
-      });
+    axios.post("/register", { email, password, username: "" });
   };
 
   return (
@@ -44,7 +33,8 @@ function Signup() {
           alignItems: "center",
         }}
       >
-        <Banner />
+          <Bannernobutton />
+
         <h2
           style={{
             flexGrow: 1,
@@ -70,8 +60,10 @@ function Signup() {
             margin="normal"
             required
             fullWidth
+            value={email}
             id="email"
             label="Email Address"
+            onChange={(e) => setEmail(e.target.value)}
             name="email"
             autoComplete="email"
             autoFocus
@@ -80,17 +72,19 @@ function Signup() {
             margin="normal"
             required
             fullWidth
+            value={password}
             name="password"
             label="Create Password"
+            onChange={(e) => setPassword(e.target.value)}
             type="password"
             id="password"
             autoComplete="new-password"
           />
 
           <Button
-          onClick={() => {
-            navigate("/Home")
-          }}
+          // onClick={() => {
+          //   navigate("/Home")
+          // }}
             type="submit"
             fullWidth
             variant="contained"
@@ -100,14 +94,15 @@ function Signup() {
               fontFamily: "'Roboto Mono', monospace",
               backgroundColor: "rgba(80,90,116, 0.5)",
             }}
+            onClick={handleSubmit}
           >
             SIGN UP
           </Button>
           <Grid container>
             <Grid item>
-              <NavLink to="/Login">
-                Already a user? LOGIN
-              </NavLink>
+              <Link href="/Login" variant="body2" sx={{ color: "gray" }}>
+                {"Already a user? LOGIN"}
+              </Link>
             </Grid>
           </Grid>
         </Box>
@@ -116,7 +111,6 @@ function Signup() {
   );
 }
 
-export default Signup;
 
 /**
  * TODO:

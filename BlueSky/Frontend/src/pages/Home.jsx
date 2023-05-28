@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Banner from "../components/Banner";
+import Bannerlogout from "../components/Bannerlogout";
 import { Modal, Box, Button, Fab, Grid } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CreateCard from "../components/modal/CreateCard";
@@ -39,7 +39,7 @@ function Home() {
 
   return (
     <Box>
-      <Banner />
+        <Bannerlogout />
       <Box
         sx={{
           display: "flex",

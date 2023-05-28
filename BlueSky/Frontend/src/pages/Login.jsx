@@ -4,29 +4,10 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { createTheme } from "@mui/material/styles";
-import Banner from "../components/Banner";
+import Bannernobutton from "../components/Bannernobutton";
 import axios from "axios";
 import { useNavigate,NavLink } from "react-router-dom";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 const theme = createTheme({
   typography: {
@@ -51,7 +32,7 @@ export default function Login() {
       .then((response) => {
         const isLogin = response.data.success;
         if (isLogin) {
-          navigate("/Home");
+          navigate("/posts");
         } else {
           alert("Error logging in");
         }
@@ -67,7 +48,7 @@ export default function Login() {
           alignItems: "center",
         }}
       >
-        <Banner />
+        <Bannernobutton />
 
         <h2
           style={{
@@ -115,17 +96,14 @@ export default function Login() {
           </Button>
           <Grid container>
             <Grid item>
-              {/* <Link href="#" variant="body2" sx={{ color: "gray" }}>
+              <Link href="/Register" variant="body2" sx={{ color: "gray" }}>
                 {"Don't have an account? Sign Up"}
-              </Link> */}
-              <NavLink to='/Signup'>
-              Don't have an account? Sign Up
-              </NavLink>
+              </Link>
+      
             </Grid>
           </Grid>
         </Box>
       </Box>
-      <Copyright sx={{ mt: 8, mb: 4 }} />
     </>
   );
 }
