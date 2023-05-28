@@ -17,11 +17,11 @@ function Card(props) {
         sx={{
           display: "flex",
           height: 200,
-          width: 200,
+          width: 350,
           backgroundColor: "#DFCCAF",
           justifyContent: "center",
           alignItems: "center",
-          fontFamily: "raleway",
+          fontFamily: "'Roboto Mono', monospace",
           m: 3,
         }}
       >
