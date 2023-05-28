@@ -173,6 +173,22 @@ app.delete("/deletePost/:id", (req, res) => {
   });
 });
 
+app.get("/getPosts/:id", (req, res) => {
+  const id = req.params.id;
+
+  db.query("SELECT * FROM PostCard WHERE id = ?", id, (err, result) => {
+    if (err) {
+      console.error("Error selecting Post", err);
+      res.sendStatus(500); // Return a server error status code
+      return;
+    } else {
+      if (result) {
+        res.send(result[0])
+      }
+    }
+  });
+});
+
 app.listen(port, () => {
   console.log("Running Server on Port ", port);
 });
